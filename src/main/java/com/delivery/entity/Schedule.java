@@ -1,8 +1,11 @@
 package com.delivery.entity;
 
+import com.delivery.constant.LabelEnum;
 import com.delivery.utils.Event;
 
 import javax.persistence.*;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,20 +18,40 @@ import java.util.List;
  */
 
 @Entity
-@Table(name="schedule")
+@Table(name = "schedule")
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="worker_id")
+    @Column(name = "worker_id")
     private int workerId;
-    @Column(name="lng")
+    @Column(name = "lng")
     private double lng;
-    @Column(name="lat")
+    @Column(name = "lat")
     private double lat;
-    @Column(name="events")
+    @Column(name = "events")
     private byte[] events;
 
+
+    @Transient
     private List<Event> schedule;
+
+    public Schedule() {
+    }
+// 从数据中读取的时候会自动安排，这里不用写
+    // 关键在于要将序列化后的二进制转化为对象
+
+
+    // 只初始化一次
+    public Schedule(int workerId, double lng, double lat, double curTime) {
+        this.workerId = workerId;
+        this.lng = lng;
+        this.lat = lat;
+        schedule = new ArrayList<>();
+        Event curLocation = new Event(LabelEnum.Worker.getName(), lng, lat, curTime, 0);
+        schedule.add(curLocation);
+        scheduleToBytes();
+    }
+
 
     public int getWorkerId() {
         return workerId;
@@ -70,13 +93,55 @@ public class Schedule {
         this.schedule = schedule;
     }
 
+    public void scheduleToBytes() {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oo = null;
+        try {
+            oo = new ObjectOutputStream(bos);
+            oo.writeObject(this.schedule);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                bos.close();
+                oo.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            this.events = bos.toByteArray();
+        }
+    }
+
+
+    // 需要额外调用这个方法
+    public void bytesToSchedule() {
+        ByteArrayInputStream bis = new ByteArrayInputStream(this.events);
+        ObjectInputStream ois = null;
+        List<Event> schedule = null;
+        try {
+            ois = new ObjectInputStream(bis);
+            schedule = (List<Event>) ois.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                bis.close();
+                ois.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            this.schedule = schedule;
+        }
+    }
+
     @Override
     public String toString() {
         return "Schedule{" +
                 "workerId=" + workerId +
                 ", lng=" + lng +
                 ", lat=" + lat +
-                ", events=" + Arrays.toString(events) +
                 ", schedule=" + schedule +
                 '}';
     }

@@ -17,6 +17,14 @@ public class Event implements Serializable {
     private double latestTime;
     private int load;
 
+    public Event(String label, double lng, double lat, double earliestTime, double latestTime) {
+        this.label = label;
+        this.lng = lng;
+        this.lat = lat;
+        this.earliestTime = earliestTime;
+        this.latestTime = latestTime;
+    }
+
     public String getLabel() {
         return label;
     }
@@ -63,6 +71,10 @@ public class Event implements Serializable {
 
     public void setLoad(int load) {
         this.load = load;
+    }
+
+    public Event copy(){
+        return new Event(label, lng, lat, earliestTime, latestTime);
     }
 
     @Override
