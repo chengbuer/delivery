@@ -1,6 +1,8 @@
 package com.delivery.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author Administrator
@@ -11,6 +13,11 @@ import org.springframework.stereotype.Controller;
  */
 
 @Controller
+@RequestMapping("/map")
 public class InitController {
     // 初始化地图界面
+    @RequestMapping(value = "/index", method= RequestMethod.GET)
+    public String init(){
+        return "index";
+    }
 }
