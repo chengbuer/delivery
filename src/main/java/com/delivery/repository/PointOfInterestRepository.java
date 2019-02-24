@@ -13,5 +13,5 @@ import java.util.List;
  * @date 2019/2/22 20:02
  */
 public interface PointOfInterestRepository extends JpaRepository<PointOfInterest, Integer> {
-    public List<PointOfInterest> findByLngBetweenAndLatBetween(double lngStart, double lngEnd, double latStart, double latEnd);
+    List<PointOfInterest> findByLngBetweenAndLatBetween(double lngStart, double lngEnd, double latStart, double latEnd);
 }

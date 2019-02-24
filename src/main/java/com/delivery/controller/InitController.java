@@ -37,7 +37,7 @@ public class InitController {
 
     }
 
-    @RequestMapping(value="pointOfInterests", method = RequestMethod.GET)
+    @RequestMapping(value="/pointOfInterests", method = RequestMethod.GET)
     @ResponseBody
     public List<PointOfInterest> getPointOfInterest(@RequestBody LngLatRange llRange){
         return initService.initPointOfInterests(llRange);
