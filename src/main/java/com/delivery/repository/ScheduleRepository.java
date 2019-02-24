@@ -13,5 +13,5 @@ import java.util.List;
  * @date 2019/2/23 16:19
  */
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer>{
-    public List<Schedule> findByLngBetweenAndLatBetween(double lngStart, double lngEnd, double latStart, double latEnd);
+    List<Schedule> findByLngBetweenAndLatBetween(double lngStart, double lngEnd, double latStart, double latEnd);
 }

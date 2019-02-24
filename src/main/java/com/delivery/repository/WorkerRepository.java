@@ -13,5 +13,5 @@ import java.util.List;
  * @date 2019/2/22 15:55
  */
 public interface WorkerRepository extends JpaRepository<Worker, Integer>{
-    public List<Worker> findByLngBetweenAndLatBetween(double lngStart, double lngEnd, double latStart, double latEnd);
+    List<Worker> findByLngBetweenAndLatBetween(double lngStart, double lngEnd, double latStart, double latEnd);
 }

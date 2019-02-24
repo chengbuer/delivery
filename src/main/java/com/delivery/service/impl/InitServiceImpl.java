@@ -7,6 +7,7 @@ import com.delivery.repository.WorkerRepository;
 import com.delivery.service.InitService;
 import com.delivery.utils.LngLatRange;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ import java.util.List;
  * @Description: TODO
  * @date 2019/2/23 21:59
  */
+
+@Service
 public class InitServiceImpl implements InitService {
 
     @Autowired
@@ -27,13 +30,17 @@ public class InitServiceImpl implements InitService {
 
     @Override
     public List<Worker> initWorkers(LngLatRange llRange) {
+        List<Worker> workers = workerRepository.findByLngBetweenAndLatBetween(llRange.getLngStart(), llRange.getLngEnd(),
+                                                        llRange.getLatStart(), llRange.getLatEnd());
 
-        return null;
+        return workers;
     }
 
     @Override
     public List<PointOfInterest> initPointOfInterests(LngLatRange llRange) {
+        List<PointOfInterest> pointOfInterests = pointOfInterestRepository.findByLngBetweenAndLatBetween(llRange.getLngStart(), llRange.getLngEnd(),
+                llRange.getLatStart(), llRange.getLatEnd());
 
-        return null;
+        return pointOfInterests;
     }
 }
