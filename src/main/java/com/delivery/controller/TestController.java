@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2019/2/21 20:42
  */
 
-@RequestMapping("/test")
+@RequestMapping("/testT")
 @Controller
 public class TestController {
 
     @Autowired
     private TestService testService;
 
-    @GetMapping("/index")
+    @GetMapping("/test1")
     public String getIndex(){
         testService.print();
-        return "index";
+        return "test";
     }
 }

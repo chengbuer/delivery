@@ -16,3 +16,8 @@
 ## 重置
 - 删除所有的schedule，数据库中worker 的坐标一直保持不变
 
+# 需要补充的知识
+- vue ajax
+- json
+- 表单的提取
+- css 的设计
