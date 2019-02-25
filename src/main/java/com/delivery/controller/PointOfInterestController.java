@@ -35,9 +35,10 @@ public class PointOfInterestController {
         return poI;
     }
 
-    @RequestMapping(value = "/workers", method = RequestMethod.GET)
+    @RequestMapping(value = "/pointOfInterests", method = RequestMethod.GET)
     @ResponseBody
     public List<PointOfInterest> getPointOfInterestsByRange(@RequestBody LngLatRange llRange) {
+        logger.info("query PointOfInterests: "  + String.valueOf(llRange));
         List<PointOfInterest> poIs = pointOfInterestService.getPointOfInterestsByRange(llRange);
         return poIs;
     }

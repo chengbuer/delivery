@@ -1,19 +1,11 @@
 var bMap = {
     URL:{
         pointInterest:function(){
-            return "/delivery/pointInterest";
-        },
-
-        task:function(){
-            return "/delivery/task";
+            return "/initial/pointOfInterests";
         },
 
         worker:function(){
-            return "/delivery/worker";
-        },
-
-        workerImage:function(){
-            return "https://t1.picb.cc/uploads/2018/11/17/JXb8n6.png";
+            return "/initial/workers";
         }
     },
 

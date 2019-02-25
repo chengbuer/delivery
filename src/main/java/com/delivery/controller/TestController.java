@@ -1,12 +1,11 @@
 package com.delivery.controller;
 
 import com.delivery.service.TestService;
+import com.delivery.utils.LngLatRange;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Administrator
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2019/2/21 20:42
  */
 
-@RequestMapping("/testT")
+@RequestMapping("/test")
 @Controller
 public class TestController {
 
@@ -27,5 +26,14 @@ public class TestController {
     public String getIndex(){
         testService.print();
         return "test";
+    }
+
+    @RequestMapping(value = "/jsonTest", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public LngLatRange jsonTest(@RequestBody LngLatRange llRange){
+
+        System.out.println(llRange);
+        return llRange;
+
     }
 }
