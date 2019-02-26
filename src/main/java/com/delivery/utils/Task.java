@@ -17,6 +17,21 @@ public class Task {
     private double endTIme;
     private int type;
 
+    public Task(){
+
+    }
+
+    public Task(int id, double lng, double lat, double beginTime, double endTIme,  double radius, double reward, int type) {
+        this.id = id;
+        this.lng = lng;
+        this.lat = lat;
+        this.radius = radius;
+        this.reward = reward;
+        this.beginTime = beginTime;
+        this.endTIme = endTIme;
+        this.type = type;
+    }
+
     public double getBeginTime() {
         return beginTime;
     }
@@ -80,5 +95,19 @@ public class Task {
 
     public void setReward(double reward) {
         this.reward = reward;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", lng=" + lng +
+                ", lat=" + lat +
+                ", radius=" + radius +
+                ", reward=" + reward +
+                ", beginTime=" + beginTime +
+                ", endTIme=" + endTIme +
+                ", type=" + type +
+                '}';
     }
 }

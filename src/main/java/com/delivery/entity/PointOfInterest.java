@@ -25,6 +25,17 @@ public class PointOfInterest {
     @Column(name="reward")
     private double reward;
 
+    public PointOfInterest(){
+
+    }
+
+    public PointOfInterest(double lng, double lat, double reward, String types) {
+        this.lng = lng;
+        this.lat = lat;
+        this.types = types;
+        this.reward = reward;
+    }
+
     @Override
     public String toString() {
         return "PointOfInterest{" +

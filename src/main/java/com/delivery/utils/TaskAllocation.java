@@ -26,7 +26,7 @@ public class TaskAllocation {
         }
 
         // 构造器，接收的参数 workers， task，point of interests
-        public TaskAllocation(List<Schedule> eventSchedules, Task task, List<PointOfInterest> pointInterests) {
+        public TaskAllocation(List<Schedule> eventSchedules, List<PointOfInterest> pointInterests, Task task) {
             this.scheduleWorkers = getValidWorkers(eventSchedules, task);
             System.out.println(this.scheduleWorkers);
             this.pointInterests = getValidPointInterest(pointInterests, task);
@@ -70,7 +70,7 @@ public class TaskAllocation {
             for (PointOfInterest p : pointInterests) {
                 String types = p.getTypes();
                 System.out.println();
-                if (types.indexOf(task.getType() + "") < 0) continue;
+                if (!types.contains(task.getType() + "")) continue;
                 if (Computation.timeCalculate(p.getLng(), p.getLat(), task.getLng(), task.getLat()) > RadiusEnum.TWENTY
                         .getRaidus())
                     continue;
@@ -86,6 +86,7 @@ public class TaskAllocation {
         public List<Schedule> getValidWorkers(List<Schedule> eventSchedules, Task task) {
             // 通过半径进
             List<Schedule> res = new ArrayList<>();
+
 
             for (Schedule es : eventSchedules) {
                 if (Computation.timeCalculate(es.getLng(), es.getLat(), task.getLng(), task.getLat()) > RadiusEnum.TWENTY
@@ -121,7 +122,10 @@ public class TaskAllocation {
                 }
             }
 
-            Schedule res = insertTaskPoIPair(bestWorker, bestPointInterest, this.task);
+
+            Schedule res = null;
+            if(bestWorker != null)
+                res = insertTaskPoIPair(bestWorker, bestPointInterest, this.task);
             return res;
         }
 
@@ -152,8 +156,10 @@ public class TaskAllocation {
                                               PointOfInterest pointInterest,
                                               Task task) {
             // 如果当前没有任务序列
+            System.out.println(eventSchedule.getSchedule());
+
             if (eventSchedule.getSchedule().size() == 1) {
-                // 直接插入
+
             }
 
             List<Event> schedule = eventSchedule.getSchedule();

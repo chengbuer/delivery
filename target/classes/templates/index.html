@@ -1,48 +1,55 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Delivery</title>
     <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <script type="text/javascript" src="//apps.bdimg.com/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.6.6/vue.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/map.css}" type="text/css" />
 </head>
 <body>
 
-<div class="container" id="app">
+<div class="container">
     <div class="row">
-        <div class="col-lg-2">
-            <form role="form"  class="form-inline">
+        <div class="col-lg-2" id="task">
+            <form role="form"  class="form-horizontal">
                 <div class="form-group">
-                    <label for="lng">经度</label>
-                    <input type="text" class="form-control" id="lng" placeholder="经度" value="116.428">
+                    <label>id</label>
+                    <input type="text" class="form-control"  placeholder="id" style="width:180px;" v-model="id">
                 </div>
                 <div class="form-group">
-                    <label for="lat">纬度</label>
-                    <input type="text" class="form-control" id="lat" placeholder="纬度" value="39.973">
+                    <label>lng</label>
+                    <input type="text" class="form-control"  placeholder="经度" style="width:180px;" v-model="lng">
                 </div>
                 <div class="form-group">
-                    <label for="begin_time">开始</label>
-                    <input type="text" class="form-control" id="begin_time" placeholder="begin" value="0">
+                    <label>lat</label>
+                    <input type="text" class="form-control"  placeholder="纬度" style="width:180px;" v-model="lat">
                 </div>
                 <div class="form-group">
-                    <label for="end_time">结束</label>
-                    <input type="text" class="form-control" id="end_time" placeholder="end" value="1000">
+                    <label>开始</label>
+                    <input type="text" class="form-control" placeholder="begin" style="width:180px;"
+                           v-model="beginTime">
                 </div>
                 <div class="form-group">
-                    <label for="type">类型</label>
-                    <input type="text" class="form-control" id="type" placeholder="type" value="1">
+                    <label>结束</label>
+                    <input type="text" class="form-control" placeholder="end" style="width:180px;" v-model="endTime">
                 </div>
                 <div class="form-group">
-                    <label for="radius">半径</label>
-                    <input type="text" class="form-control" id="radius" placeholder="radius" value="1000">
+                    <label>类型</label>
+                    <input type="text" class="form-control"  placeholder="type" style="width:180px;" v-model="type">
                 </div>
                 <div class="form-group">
-                    <label for="reward">奖励</label>
-                    <input type="text" class="form-control" id="reward" placeholder="reward" value="0.3">
+                    <label>半径</label>
+                    <input type="text" class="form-control"  placeholder="radius" style="width:180px;" v-model="radius">
                 </div>
-                <button type="button" onclick="query.timeQuery()" class="btn btn-default" id="task_submit">提交
+                <div class="form-group">
+                    <label>奖励</label>
+                    <input type="text" class="form-control" placeholder="reward" style="width:180px;" v-model="reward">
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-default" @click="arrangeTask">提交
                 </button>
+                </div>
             </form>
         </div>
         <div class="col-lg-10" id="map"></div>
@@ -50,10 +57,10 @@
 </div>
 
 </body>
-<script src="https://cdn.bootcss.com/vue/2.6.6/vue.min.js"></script>
+
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=sq5b8szTKuH0rvcx4jP2U0eziTZfPGK8"></script>
 <script th:src="@{/js/map_initial.js}" type="text/javascript"></script>
-<script th:src="@{/js/query.js}" type="text/javascript"></script>
+<script th:src="@{/js/index.js}" type="text/javascript"></script>
 
 <script type="text/javascript">
     var map = new BMap.Map("map");

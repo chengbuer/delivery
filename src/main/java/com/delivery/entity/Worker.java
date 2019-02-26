@@ -28,6 +28,7 @@ public class Worker {
     @Column(name = "radius")
     private double radius;
 
+
     public int getId() {
         return id;
     }

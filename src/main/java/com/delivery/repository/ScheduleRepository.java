@@ -17,8 +17,4 @@ import java.util.List;
  */
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer>{
     List<Schedule> findByLngBetweenAndLatBetween(double lngStart, double lngEnd, double latStart, double latEnd);
-
-    @Modifying
-    @Query(value="insert into schedule values(?1, ?2, ?3, ?4)", nativeQuery = true)
-    void insertSchedule(int workerId, double lng, double lat, byte[] events);
 }
