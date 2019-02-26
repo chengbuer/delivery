@@ -41,8 +41,9 @@ public class InitController {
     @RequestMapping(value="/workers", method = RequestMethod.POST)
     @ResponseBody
     public List<Worker> getWorkers(@RequestBody LngLatRange llRange){
-        return initService.initWorkers(llRange);
-
+        List<Worker> workers = initService.initWorkers(llRange);
+        logger.info(String.valueOf(workers));
+        return workers;
     }
 
     @RequestMapping(value="/pointOfInterests", method = RequestMethod.POST)

@@ -6,6 +6,7 @@
 - worker 路径的展示
 - Task 的展示
 - Point of interest 的展示
+- worker 和 point of interest 在界面上展示
 
 # 管理界面
 ## 实体添加 
@@ -20,4 +21,8 @@
 - vue ajax, 方法, 变量
 - json
 - 表单的提取
-- css 的设计
+- css 的设记
+
+# 补充的功能
+- [x] 删除 schedule 中的所有信息，可以说是重置
+

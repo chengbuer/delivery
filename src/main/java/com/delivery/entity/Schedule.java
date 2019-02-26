@@ -2,6 +2,7 @@ package com.delivery.entity;
 
 import com.delivery.constant.LabelEnum;
 import com.delivery.utils.Event;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.*;
@@ -21,7 +22,8 @@ import java.util.List;
 @Table(name = "schedule")
 public class Schedule {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "worker_id")
+    @GenericGenerator(name = "worker_id", strategy = "assigned")
     @Column(name = "worker_id")
     private int workerId;
     @Column(name = "lng")

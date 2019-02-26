@@ -65,3 +65,4 @@ var pointOfInterestForm = new Vue({
         }
     }
 });
+
