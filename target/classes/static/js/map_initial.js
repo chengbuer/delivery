@@ -74,31 +74,31 @@ var bMap= new Vue({
                     var point = new BMap.Point(workers.data[i].lng, workers.data[i].lat);
 
                     // 初始化路线
+                    var myIcon = new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png',
+                        new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)})
 
                     var drv = new BMap.DrivingRoute('北京', {
                         onSearchComplete: function(res) {
-                            if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
-                                var plan = res.getPlan(0);
-                                var arrPois =[];
-                                for(var j=0;j<plan.getNumRoutes();j++){
-                                    var route = plan.getRoute(j);
-                                    arrPois= arrPois.concat(route.getPath());
+                            var pts = drv.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组
+                            var paths = pts.length;    //获得有几个点
+
+                            var carMk = new BMap.Marker(pts[0], {icon: myIcon});
+                            map.addOverlay(carMk);
+                            i = 0;
+
+                            function resetMkPoint(i) {
+                                carMk.setPosition(pts[i]);
+                                if (i < paths) {
+                                    setTimeout(function () {
+                                        i++;
+                                        resetMkPoint(i);
+                                    }, 100);
                                 }
-
-
-                                lushu = new BMapLib.LuShu(map,arrPois,{
-                                    defaultContent:"",//"从天安门到百度大厦"
-                                    autoView:true,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-                                    icon  : new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
-                                    speed: 4500,
-                                    enableRotation:true,//是否设置marker随着道路的走向进行旋转
-                                    landmarkPois: [
-                                        {lng:116.314782,lat:39.913508,html:'加油站',pauseTime:2},
-                                        {lng:116.315391,lat:39.964429,html:'高速公路收费<div><img src="http://map.baidu.com/img/logo-map.gif"/></div>',pauseTime:3},
-                                        {lng:116.381476,lat:39.974073,html:'肯德基早餐<div><img src="http://ishouji.baidu.com/resource/images/map/show_pic04.gif"/></div>',pauseTime:2}
-                                    ]});
-                                lushu.start();
                             }
+
+                            setTimeout(function () {
+                                resetMkPoint(5);
+                            }, 100)
                         }
                         ,renderOptions:{map: map, autoViewport: true}});
 
