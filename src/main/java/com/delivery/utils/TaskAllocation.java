@@ -156,7 +156,7 @@ public class TaskAllocation {
                                               PointOfInterest pointInterest,
                                               Task task) {
             // 如果当前没有任务序列
-            System.out.println(eventSchedule.getSchedule());
+            //System.out.println(eventSchedule.getSchedule());
 
             if (eventSchedule.getSchedule().size() == 1) {
 
@@ -170,8 +170,8 @@ public class TaskAllocation {
                     0, 0  /*减去 二者间的时间消耗 todo*/);
 
             Event taskEvent = new Event( LabelEnum.Task.getName(),task.getLng(), task.getLat(), task.getBeginTime()
-                    , task.getEndTIme());
-            poIEvent.setLatestTime(task.getEndTIme() - Computation.timeCalculate(poIEvent, taskEvent));
+                    , task.getEndTime());
+            poIEvent.setLatestTime(task.getEndTime() - Computation.timeCalculate(poIEvent, taskEvent));
 
 
             ResultComponent rc = new ResultComponent();

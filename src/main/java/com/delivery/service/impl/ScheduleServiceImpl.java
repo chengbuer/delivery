@@ -6,12 +6,16 @@ import com.delivery.repository.PointOfInterestRepository;
 import com.delivery.repository.ScheduleRepository;
 import com.delivery.service.PointOfInterestService;
 import com.delivery.service.ScheduleService;
+import com.delivery.utils.Event;
 import com.delivery.utils.Task;
 import com.delivery.utils.TaskAllocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 /**
  * @author Administrator
@@ -24,6 +28,8 @@ import java.util.List;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ScheduleRepository scheduleRepository;
@@ -54,7 +60,15 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         TaskAllocation ta = new TaskAllocation(schedules, poIs, task);
 
+
+
         Schedule schedule = ta.getBestPair();
+        logger.info(String.valueOf(schedule));
+
+        if(schedule != null){
+            schedule.scheduleToBytes();
+            scheduleRepository.save(schedule);
+        }
 
         return schedule;
     }

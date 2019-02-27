@@ -43,9 +43,12 @@ public class ScheduleController {
 
     @RequestMapping(value = "/taskQuery", method = RequestMethod.POST)
     @ResponseBody
-    public List<Schedule> findBestSchedule(@RequestBody Task task){
+    public Schedule findBestSchedule(@RequestBody Task task){
         logger.info(String.valueOf(task));
 
-        return null;
+        Schedule bestSchedule = scheduleService.arrangeTaskToBestSchedule(task);
+        bestSchedule.setEvents(null);
+
+        return bestSchedule;
     }
 }

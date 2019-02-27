@@ -37,7 +37,7 @@ public class ScheduleServiceImplTest {
     @Test
     public void arrangeTaskToBestSchedule() throws Exception {
         Task task = new Task(1, 116.404, 39.905, 0, 1000, 2, 1, 1);
-        Schedule schedule = scheduleService.arrangeTaskToBestSchedule(task);
+        Schedule  schedule = scheduleService.arrangeTaskToBestSchedule(task);
 
         System.out.println(schedule);
     }

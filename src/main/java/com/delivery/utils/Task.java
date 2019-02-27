@@ -14,21 +14,22 @@ public class Task {
     private double radius;
     private double reward;
     private double beginTime;
-    private double endTIme;
+    private double endTime;
     private int type;
 
     public Task(){
 
     }
 
-    public Task(int id, double lng, double lat, double beginTime, double endTIme,  double radius, double reward, int type) {
+    public Task(int id, double lng, double lat, double beginTime, double endTime,  double radius, double reward, int
+            type) {
         this.id = id;
         this.lng = lng;
         this.lat = lat;
         this.radius = radius;
         this.reward = reward;
         this.beginTime = beginTime;
-        this.endTIme = endTIme;
+        this.endTime = endTime;
         this.type = type;
     }
 
@@ -40,12 +41,12 @@ public class Task {
         this.beginTime = beginTime;
     }
 
-    public double getEndTIme() {
-        return endTIme;
+    public double getEndTime() {
+        return endTime;
     }
 
-    public void setEndTIme(double endTIme) {
-        this.endTIme = endTIme;
+    public void setEndTime(double endTime) {
+        this.endTime = endTime;
     }
 
     public int getType() {
@@ -106,7 +107,7 @@ public class Task {
                 ", radius=" + radius +
                 ", reward=" + reward +
                 ", beginTime=" + beginTime +
-                ", endTIme=" + endTIme +
+                ", endTIme=" + endTime +
                 ", type=" + type +
                 '}';
     }
