@@ -43,7 +43,7 @@ var task = new Vue({
                 console.log(workerInfo)
                 // 取出这段序列
                 var route = workerInfo.data.schedule;
-                console.log(route);
+                //console.log(route);
                 var points = [];
                 var len = route.length;
 

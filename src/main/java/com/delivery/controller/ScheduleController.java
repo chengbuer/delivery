@@ -47,7 +47,8 @@ public class ScheduleController {
         logger.info(String.valueOf(task));
 
         Schedule bestSchedule = scheduleService.arrangeTaskToBestSchedule(task);
-        bestSchedule.setEvents(null);
+        if(bestSchedule != null)
+            bestSchedule.setEvents(null);
 
         return bestSchedule;
     }
