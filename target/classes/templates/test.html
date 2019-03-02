@@ -11,12 +11,34 @@
 </head>
 <body>
 <div id="app">
-    <button v-on:click="greet">增加 1</button>
+    <button @click="greet">增加 1</button>
     <p>这个按钮被点击了次</p>
 </div>
 
 <script>
+    var app = new Vue({
+        el: '#app',
+        data: {
 
+        },
+        filters: {
+
+        },
+        created: function () {
+            setInterval(this.timer, 1000);
+        },
+        methods: {
+            timer: function () {
+                console.log("time");
+            }
+        },
+        watch: {
+
+        },
+        computed: {
+
+        }
+    });
 </script>
 </body>
 </html>

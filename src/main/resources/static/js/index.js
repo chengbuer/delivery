@@ -13,14 +13,7 @@ var task = new Vue({
     },
 
     methods:{
-        hello:function () {
-            alert("Hello world")
-        },
-
         arrangeTask:function(drivingRoutes){
-
-            console.log(drivingRoutes)
-
 
             var task={
                 id : this.id,
@@ -33,36 +26,67 @@ var task = new Vue({
                 reward:this.reward
             }
 
-            console.log(task)
-
             axios({
                 method:'POST',
                 url:this.taskQuery,
                 data:task
             }).then(function(workerInfo){
-                console.log(workerInfo)
-                // 取出这段序列
+
                 var route = workerInfo.data.schedule;
                 //console.log(route);
                 var points = [];
                 var len = route.length;
 
-                 var start = new BMap.Point(route[0].lng, route[0].lat);
-                 var end = new BMap.Point(route[len-1].lng, route[len-1].lat);
+                var start = new BMap.Point(route[0].lng, route[0].lat);
+                var end = new BMap.Point(route[len-1].lng, route[len-1].lat);
 
-                 for(var i = 1; i < route.length - 1; i++){
+                for(var i = 1; i < route.length - 1; i++){
                      points.push(new BMap.Point(route[i].lng, route[i].lat));
-                 }
-                // console.log(start);
-                // console.log(points);
-                // console.log(end);
+                }
 
-
-                console.log(drivingRoutes.get(workerInfo.data.workerId))
                 var print = drivingRoutes.get(workerInfo.data.workerId);
 
-                 print.search(start, end,{waypoints:points});//waypoints表示途经点
+                print.search(start, end,{waypoints:points});
             });
         }
     }
 });
+
+
+var locationUpdate = new Vue({
+    el: '#app',
+    data: {
+        workersInfo:[]
+    },
+    filters: {
+
+    },
+    created: function () {
+        setInterval(this.updateWorkerLocations, 1000);
+    },
+    methods: {
+        updateWorkerLocations: function (drivingRoutes) {
+            // 需要以下两个信息
+            // workerId
+            // lng & lat
+            console.log(drivingRoutes[1])
+            for(var workerId in drivingRoutes){
+                loc = drivingRoutes[key];
+                loc.lng;
+                loc.lat;
+
+                var workerInfo = {
+                    workerId : workerId,
+                    lng : lng,
+                    lat : lat
+                }
+
+                console.log(workerInfo);
+            }
+
+
+        }
+    }
+});
+
+
