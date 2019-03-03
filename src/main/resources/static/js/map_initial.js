@@ -97,11 +97,12 @@ var bMap= new Vue({
                                 map.addOverlay(carMk);
                                 i=0;
                                 function resetMkPoint(i){
-                                    carMk.setPosition(pts[i]);
-                                    drv.lng = pts[i].lng;
-                                    drv.lat = pts[i].lng;
+
                                    // console.log(drv.lng)
                                     if(i < paths){
+                                        carMk.setPosition(pts[i]);
+                                        drv.lng = pts[i].lng;
+                                        drv.lat = pts[i].lat;
                                         setTimeout(function(){
                                             i++;
                                             resetMkPoint(i);
@@ -116,6 +117,8 @@ var bMap= new Vue({
                         }
                         ,renderOptions:{map: map, autoViewport: true}});
                     drv.id = workers.data[i].id;
+                    drv.lng = workers.data[i].lng;
+                    drv.lat = workers.data[i].lat;
                     drivingRoutes.set(workers.data[i].id, drv);
 
                     // console.log(drv.id)

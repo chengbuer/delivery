@@ -5,6 +5,7 @@ import com.delivery.repository.ScheduleRepository;
 import com.delivery.service.ScheduleService;
 import com.delivery.utils.Task;
 import com.delivery.utils.TaskAllocation;
+import com.delivery.utils.WorkerInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,14 @@ public class ScheduleController {
             bestSchedule.setEvents(null);
 
         return bestSchedule;
+    }
+
+    @RequestMapping(value = "/locationUpdated", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Schedule> updateLocations(@RequestBody List<WorkerInfo> workers){
+
+        System.out.println(workers);
+
+        return null;
     }
 }
