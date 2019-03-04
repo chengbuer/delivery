@@ -37,6 +37,11 @@ var task = new Vue({
                     url:this.locationUpdated,
                     data:drivings
                 }).then(function(routes) {
+                    // 这里获得routes 的信息后，再调用查询，这样查询得到的位置是最新的。
+
+
+
+
                     // 更新所有信息后，还要重新进行路径的搜索
                     // var workersInfo = routes.data;
                     // for(var i = 0; i < workersInfo.length; i++){

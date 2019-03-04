@@ -18,4 +18,5 @@ import java.util.List;
 public interface ScheduleService {
     void removeAllSchedule();
     Schedule arrangeTaskToBestSchedule(Task task);
+    void updateSchedules();
 }

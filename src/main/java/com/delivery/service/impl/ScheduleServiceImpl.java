@@ -72,4 +72,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         return schedule;
     }
+
+    @Override
+    public void updateSchedules() {
+        // 如何更新event 信息
+    }
 }
