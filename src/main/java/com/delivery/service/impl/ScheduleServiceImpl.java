@@ -9,12 +9,14 @@ import com.delivery.service.ScheduleService;
 import com.delivery.utils.Event;
 import com.delivery.utils.Task;
 import com.delivery.utils.TaskAllocation;
+import com.delivery.utils.WorkerInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -54,18 +56,16 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<Schedule> schedules = scheduleRepository.findByLngBetweenAndLatBetween(lngStart, lngEnd,
                 latStart, latEnd);
 
-        for(Schedule schedule : schedules){
+        for (Schedule schedule : schedules) {
             schedule.bytesToSchedule();
         }
 
         TaskAllocation ta = new TaskAllocation(schedules, poIs, task);
 
-
-
         Schedule schedule = ta.getBestPair();
         logger.info(String.valueOf(schedule));
 
-        if(schedule != null){
+        if (schedule != null) {
             schedule.scheduleToBytes();
             scheduleRepository.save(schedule);
         }
@@ -76,5 +76,15 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void updateSchedules() {
         // 如何更新event 信息
+    }
+
+    @Override
+    public Schedule updateSingleSchedule(WorkerInfo workerInfo) {
+
+        Optional<Schedule> k = scheduleRepository.findById(workerInfo.getWorkerId());
+        Schedule schedule = k.get();
+        schedule.updateSchedule(workerInfo);
+        scheduleRepository.save(schedule);
+        return schedule;
     }
 }

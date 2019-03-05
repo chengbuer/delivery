@@ -27,7 +27,8 @@ var task = new Vue({
                 var workerInfo = {
                     workerId: key[0],
                     lng: key[1].lng,
-                    lat: key[1].lat
+                    lat: key[1].lat,
+                    eventCompleted : key[1].passedEvent
                 }
 
                 drivings.push(workerInfo);

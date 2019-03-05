@@ -75,54 +75,61 @@ var bMap= new Vue({
                 console.log(workers.data);
 
                 for (var i = 0; i < workers.data.length; i++) {
-                    var point = new BMap.Point(workers.data[i].lng, workers.data[i].lat);
 
-                    // 初始化路线
-                    var drv = new BMap.DrivingRoute('北京', {
-                        onSearchComplete: function(res) {
-                            var s = "worker" + res.data
-                            if (drv.getStatus() == BMAP_STATUS_SUCCESS) {
-                                var plan = res.getPlan(0);
-                                var pts =[];
-                                for(var j=0;j<plan.getNumRoutes();j++){
-                                    var route = plan.getRoute(j);
-                                    pts= pts.concat(route.getPath());
-                                }
+                    var drv = new BMap.DrivingRoute('北京', {renderOptions:{map: map, autoViewport: true}});
+                    drv.setMarkersSetCallback(function(pois){
 
+                        markers = [];
+                        for(var i = 1; i < pois.length - 1; i++){
+                            markers.push(pois[i].point);
+                        }
 
-                                var paths = pts.length;    //获得有几个点
-                                var carMk = new BMap.Marker(pts[0],{icon:myIcon});
+                        var plan = drv.getResults().getPlan(0);
+                        var pts =[];
+                        for(var j=0;j<plan.getNumRoutes();j++){
+                            var route = plan.getRoute(j);
+                            pts= pts.concat(route.getPath());
+                        }
 
 
-                                map.addOverlay(carMk);
-                                i=0;
-                                function resetMkPoint(i){
+                        var paths = pts.length;    //获得有几个点
+                        var carMk = new BMap.Marker(pts[0],{icon:myIcon});
 
-                                   // console.log(drv.lng)
-                                    if(i < paths){
-                                        carMk.setPosition(pts[i]);
-                                        drv.lng = pts[i].lng;
-                                        drv.lat = pts[i].lat;
-                                        setTimeout(function(){
-                                            i++;
-                                            resetMkPoint(i);
-                                        },100);
-                                    }
+                        map.addOverlay(carMk);
+                        i=0;
+                        var passedEvent = 0;
+                        function resetMkPoint(i){
+
+                            // console.log(drv.lng)
+                            if(i < paths){
+                                carMk.setPosition(pts[i]);
+                                drv.lng = pts[i].lng;
+                                drv.lat = pts[i].lat;
+                                if(passedEvent < markers.length && pts[i].lng == markers[passedEvent].lng && pts[i].lat == markers[passedEvent].lat){
+                                    console.log("Hello");
+                                    passedEvent++;
                                 }
                                 setTimeout(function(){
-                                    resetMkPoint(7);
-                                },100)
-
+                                    i++;
+                                    resetMkPoint(i);
+                                },100);
+                            }else{
+                                passedEvent++;
+                                console.log(passedEvent);
                             }
                         }
-                        ,renderOptions:{map: map, autoViewport: true}});
+                        setTimeout(function(){
+                            resetMkPoint(7);
+                        },100)
+                    });
+
                     drv.id = workers.data[i].id;
                     drv.lng = workers.data[i].lng;
                     drv.lat = workers.data[i].lat;
                     drivingRoutes.set(workers.data[i].id, drv);
 
                     // console.log(drv.id)
-
+                    var point = new BMap.Point(workers.data[i].lng, workers.data[i].lat);
                     var marker = new BMap.Marker(point);
                     map.addOverlay(marker);
                 }

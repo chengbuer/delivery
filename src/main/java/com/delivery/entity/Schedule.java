@@ -2,6 +2,7 @@ package com.delivery.entity;
 
 import com.delivery.constant.LabelEnum;
 import com.delivery.utils.Event;
+import com.delivery.utils.WorkerInfo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -51,6 +52,17 @@ public class Schedule {
         schedule = new ArrayList<>();
         Event curLocation = new Event(LabelEnum.Worker.getName(), lng, lat, curTime, 0);
         schedule.add(curLocation);
+        scheduleToBytes();
+    }
+
+
+    public void updateSchedule(WorkerInfo workerInfo){
+        bytesToSchedule();
+        int eventCompleted = workerInfo.getEventCompleted();
+        for(int i = eventCompleted; i > 1; i--){
+            schedule.remove(i);
+        }
+
         scheduleToBytes();
     }
 

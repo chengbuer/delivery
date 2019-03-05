@@ -11,6 +11,27 @@ public class WorkerInfo {
     private int workerId;
     private double lng;
     private double lat;
+    private int eventCompleted;
+
+    @Override
+    public String toString() {
+        return "WorkerInfo{" +
+                "workerId=" + workerId +
+                ", lng=" + lng +
+                ", lat=" + lat +
+                ", eventCompleted=" + eventCompleted +
+                '}';
+    }
+
+    public int getEventCompleted() {
+        return eventCompleted;
+    }
+
+    public void setEventCompleted(int eventCompleted) {
+        this.eventCompleted = eventCompleted;
+    }
+
+
 
     public int getWorkerId() {
         return workerId;
@@ -36,12 +57,4 @@ public class WorkerInfo {
         this.lat = lat;
     }
 
-    @Override
-    public String toString() {
-        return "WorkerInfo{" +
-                "workerId=" + workerId +
-                ", lng=" + lng +
-                ", lat=" + lat +
-                '}';
-    }
 }

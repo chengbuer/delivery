@@ -56,10 +56,18 @@ public class ScheduleController {
 
     @RequestMapping(value = "/locationUpdated", method = RequestMethod.POST)
     @ResponseBody
-    public List<Schedule> updateLocations(@RequestBody List<WorkerInfo> workers){
+    public List<Schedule> updateLocations(@RequestBody List<WorkerInfo> workersInfo){
 
-        System.out.println(workers);
+        System.out.println(workersInfo);
 
+        return null;
+    }
+
+
+    @RequestMapping(value = "/singleLocationUpdated", method = RequestMethod.POST)
+    @ResponseBody
+    public Schedule updateSingeLocation(@RequestBody WorkerInfo workerInfo){
+        logger.info(String.valueOf(workerInfo));
         return null;
     }
 }
