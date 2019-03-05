@@ -41,5 +41,10 @@
 
 问题出现在 2， 如何判断worker 有没有完成 event。
  
+ 
+ # 更新
+ - 补充以文件形式录入 tasks
+ - 展示总的 utility 值
+ - Task 界面更新
 
 
