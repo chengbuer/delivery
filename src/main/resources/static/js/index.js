@@ -35,9 +35,21 @@ var task = new Vue({
                 console.log(workerInfo);
             }
 
+            var task={
+                id : this.id,
+                lng: this.lng,
+                lat: this.lat,
+                beginTime:this.beginTime,
+                endTime:this.endTime,
+                radius:this.radius,
+                type:this.type,
+                reward:this.reward
+            }
+
             // 提交信息后，在后台更新所有worker 的位置信息
             axios({
                 method:'POST',
+                async : false,
                 url:this.locationUpdated,
                 data:drivings
             }).then(function(routes) {
@@ -48,8 +60,21 @@ var task = new Vue({
 
                 // 提交task 的信息
                 // 返回合适的worker，然后进行操作希望读写操作快一点
-                this.methods.arrangeTask(drivingRoutes);
-                console.log("Hello world");
+                $.ajax({
+                    url:this.taskQuery,
+                    async : false,
+                    data:JSON.stringify(task),
+                    type:'POST',
+                    dataType:"application/json;charset=utf-8",
+                    headers:{"Content-Type":"application/json;charset=UTF-8"},
+                    success:function(str){	//成功回调函数
+                        console.log("Hello world");
+                        alert(str);
+                    },
+                    error:function (err){	//失败回调函数
+                        alert(err);
+                    }
+                });
             });
         },
 
@@ -67,6 +92,21 @@ var task = new Vue({
             }
 
             console.log(task);
+
+            $.ajax({
+                url:this.taskQuery,
+                data:JSON.stringify(task),
+                type:'POST',
+                dataType:"application/json;charset=utf-8",
+                headers:{"Content-Type":"application/json;charset=UTF-8"},
+                success:function(str){	//成功回调函数
+                    console.log("Hello world");
+                    alert(str);
+                },
+                error:function (err){	//失败回调函数
+                    alert(err);
+                }
+            });
 
             // axios({
             //     method:'POST',
