@@ -57,8 +57,10 @@ public class ScheduleController {
     @RequestMapping(value = "/locationUpdated", method = RequestMethod.POST)
     @ResponseBody
     public List<Schedule> updateLocations(@RequestBody List<WorkerInfo> workersInfo){
-
+        // 这里更新完之后没必要返回，直接存储，然后接着下一步就调用 安排task的函数
         System.out.println(workersInfo);
+        scheduleService.updateSchedules(workersInfo);
+        // 位置已经能够更新了
 
         return null;
     }

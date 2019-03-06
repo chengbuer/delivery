@@ -63,5 +63,11 @@ public class ScheduleServiceImplTest {
         System.out.println(es);
     }
 
+    @Test
+    public void findSchedulesById(){
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+    }
 
 }

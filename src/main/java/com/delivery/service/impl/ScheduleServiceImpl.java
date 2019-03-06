@@ -15,8 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 /**
@@ -74,8 +73,26 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public void updateSchedules() {
-        // 如何更新event 信息
+    public void updateSchedules(List<WorkerInfo> workersInfo) {
+        List<Integer> ids = new ArrayList<>();
+        Map<Integer, WorkerInfo> map = new HashMap<>();
+        for(WorkerInfo info : workersInfo){
+            ids.add(info.getWorkerId());
+            map.put(info.getWorkerId(), info);
+        }
+
+        List<Schedule> schedules = scheduleRepository.findAllById(ids);
+
+        for(Schedule schedule : schedules){
+            System.out.println("升级前 " + schedule.getLng() + " " + schedule.getLat());
+            Integer cur = schedule.getWorkerId();
+            WorkerInfo info= map.get(cur);
+
+            schedule.updateSchedule(info);
+            System.out.println("升级后" + schedule.getLng() + " " + schedule.getLat());
+        }
+
+        scheduleRepository.saveAll(schedules);
     }
 
     @Override

@@ -77,6 +77,10 @@ var bMap= new Vue({
                 for (var i = 0; i < workers.data.length; i++) {
 
                     var drv = new BMap.DrivingRoute('北京', {renderOptions:{map: map, autoViewport: true}});
+                    drv.id = workers.data[i].id;
+                    drv.lng = workers.data[i].lng;
+                    drv.lat = workers.data[i].lat;
+                    drivingRoutes.set(workers.data[i].id, drv);
                     drv.setMarkersSetCallback(function(pois){
 
                         markers = [];
@@ -93,18 +97,16 @@ var bMap= new Vue({
 
 
                         var paths = pts.length;    //获得有几个点
-                        var carMk = new BMap.Marker(pts[0],{icon:myIcon});
-
-                        map.addOverlay(carMk);
                         i=0;
                         var passedEvent = 0;
                         function resetMkPoint(i){
 
                             // console.log(drv.lng)
                             if(i < paths){
-                                carMk.setPosition(pts[i]);
+                                drv.carMk.setPosition(pts[i]);
                                 drv.lng = pts[i].lng;
                                 drv.lat = pts[i].lat;
+                                console.log(drv.lng);
                                 if(passedEvent < markers.length && pts[i].lng == markers[passedEvent].lng && pts[i].lat == markers[passedEvent].lat){
                                     console.log("Hello");
                                     passedEvent++;
@@ -123,15 +125,13 @@ var bMap= new Vue({
                         },100)
                     });
 
-                    drv.id = workers.data[i].id;
-                    drv.lng = workers.data[i].lng;
-                    drv.lat = workers.data[i].lat;
-                    drivingRoutes.set(workers.data[i].id, drv);
+
 
                     // console.log(drv.id)
                     var point = new BMap.Point(workers.data[i].lng, workers.data[i].lat);
-                    var marker = new BMap.Marker(point);
+                    var marker = new BMap.Marker(point, {icon:myIcon});
                     map.addOverlay(marker);
+                    drv.carMk = marker;
                 }
                 console.log(workers.data);
                 console.log(drivingRoutes)

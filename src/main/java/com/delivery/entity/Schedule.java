@@ -57,6 +57,8 @@ public class Schedule {
 
 
     public void updateSchedule(WorkerInfo workerInfo){
+        this.lng = workerInfo.getLng();
+        this.lat = workerInfo.getLat();
         bytesToSchedule();
         int eventCompleted = workerInfo.getEventCompleted();
         for(int i = eventCompleted; i > 1; i--){

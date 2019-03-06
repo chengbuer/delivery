@@ -27,45 +27,30 @@ var task = new Vue({
                 var workerInfo = {
                     workerId: key[0],
                     lng: key[1].lng,
-                    lat: key[1].lat
+                    lat: key[1].lat,
+                    eventCompleted : key[1].passedEvent
                 }
 
                 drivings.push(workerInfo);
-
-                axios({
-                    method:'POST',
-                    url:this.locationUpdated,
-                    data:drivings
-                }).then(function(routes) {
-                    // 这里获得routes 的信息后，再调用查询，这样查询得到的位置是最新的。
-
-
-
-
-                    // 更新所有信息后，还要重新进行路径的搜索
-                    // var workersInfo = routes.data;
-                    // for(var i = 0; i < workersInfo.length; i++){
-                    //     var route = workerInfo[i].data.schedule;
-                    //     //console.log(route);
-                    //     var points = [];
-                    //     var len = route.length;
-                    //
-                    //     var start = new BMap.Point(route[0].lng, route[0].lat);
-                    //     var end = new BMap.Point(route[len-1].lng, route[len-1].lat);
-                    //
-                    //     for(var i = 1; i < route.length - 1; i++){
-                    //         points.push(new BMap.Point(route[i].lng, route[i].lat));
-                    //     }
-                    //
-                    //     var print = drivingRoutes.get(workerInfo.data.workerId);
-                    //
-                    //     print.search(start, end,{waypoints:points});
-                    // }
-                });
-
-
                 console.log(workerInfo);
             }
+
+            // 提交信息后，在后台更新所有worker 的位置信息
+            axios({
+                method:'POST',
+                url:this.locationUpdated,
+                data:drivings
+            }).then(function(routes) {
+                // 这里可以返回一个状态值
+                // 这里获得routes 的信息后，再调用查询，这样查询得到的位置是最新的。
+                // 提交信息后，在后台
+                // 这里会调用 arrangeTask 的函数，找到合适的worker，并且前端只更新该worker 的路径信息
+
+                // 提交task 的信息
+                // 返回合适的worker，然后进行操作希望读写操作快一点
+                this.methods.arrangeTask(drivingRoutes);
+                console.log("Hello world");
+            });
         },
 
         arrangeTask:function(drivingRoutes){
@@ -81,28 +66,30 @@ var task = new Vue({
                 reward:this.reward
             }
 
-            axios({
-                method:'POST',
-                url:this.taskQuery,
-                data:task
-            }).then(function(workerInfo){
+            console.log(task);
 
-                var route = workerInfo.data.schedule;
-                //console.log(route);
-                var points = [];
-                var len = route.length;
-
-                var start = new BMap.Point(route[0].lng, route[0].lat);
-                var end = new BMap.Point(route[len-1].lng, route[len-1].lat);
-
-                for(var i = 1; i < route.length - 1; i++){
-                     points.push(new BMap.Point(route[i].lng, route[i].lat));
-                }
-
-                var print = drivingRoutes.get(workerInfo.data.workerId);
-
-                print.search(start, end,{waypoints:points});
-            });
+            // axios({
+            //     method:'POST',
+            //     url:this.taskQuery,
+            //     data:task
+            // }).then(function(workerInfo){
+            //
+            //     var route = workerInfo.data.schedule;
+            //     //console.log(route);
+            //     var points = [];
+            //     var len = route.length;
+            //
+            //     var start = new BMap.Point(route[0].lng, route[0].lat);
+            //     var end = new BMap.Point(route[len-1].lng, route[len-1].lat);
+            //
+            //     for(var i = 1; i < route.length - 1; i++){
+            //          points.push(new BMap.Point(route[i].lng, route[i].lat));
+            //     }
+            //
+            //     var print = drivingRoutes.get(workerInfo.data.workerId);
+            //
+            //     print.search(start, end,{waypoints:points});
+            // });
         }
     }
 });
