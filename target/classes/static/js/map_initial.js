@@ -72,66 +72,56 @@ var bMap= new Vue({
                 url:this.workers,
                 data:llRange
             }).then(function(workers){
-                console.log(workers.data);
-
                 for (var i = 0; i < workers.data.length; i++) {
-
                     var drv = new BMap.DrivingRoute('北京', {renderOptions:{map: map, autoViewport: true}});
                     drv.id = workers.data[i].id;
                     drv.lng = workers.data[i].lng;
                     drv.lat = workers.data[i].lat;
                     drivingRoutes.set(workers.data[i].id, drv);
-                    drv.setMarkersSetCallback(function(pois){
+                    drv.eventCompleted = 0;
+                    drv.setMarkersSetCallback(function(pois) {
 
                         markers = [];
-                        for(var i = 1; i < pois.length - 1; i++){
+                        console.log(pois);
+                        for (var i = 1; i < pois.length - 1; i++) {
                             markers.push(pois[i].point);
                         }
 
                         var plan = drv.getResults().getPlan(0);
-                        var pts =[];
-                        for(var j=0;j<plan.getNumRoutes();j++){
+                        var pts = [];
+                        for (var j = 0; j < plan.getNumRoutes(); j++) {
                             var route = plan.getRoute(j);
-                            pts= pts.concat(route.getPath());
+                            pts = pts.concat(route.getPath());
                         }
 
 
                         var paths = pts.length;    //获得有几个点
-                        i=0;
-                        var passedEvent = 0;
-                        function resetMkPoint(i){
 
-                            // console.log(drv.lng)
-                            if(i < paths){
+                        var i = 0;
+                        drv.moveRoute = setInterval(resetMkPoint, 100);
+
+                        function resetMkPoint() {
+                            if (i < paths) {
                                 drv.carMk.setPosition(pts[i]);
+                                console.log(pts[i]);
                                 drv.lng = pts[i].lng;
                                 drv.lat = pts[i].lat;
-                                console.log(drv.lng);
-                                if(passedEvent < markers.length && pts[i].lng == markers[passedEvent].lng && pts[i].lat == markers[passedEvent].lat){
-                                    console.log("Hello");
-                                    passedEvent++;
+                                if (drv.eventCompleted < markers.length && pts[i].lng == markers[drv.eventCompleted].lng && pts[i].lat == markers[drv.eventCompleted].lat) {
+                                    drv.eventCompleted++;
+                                    console.log(drv.eventCompleted);
                                 }
-                                setTimeout(function(){
-                                    i++;
-                                    resetMkPoint(i);
-                                },100);
-                            }else{
-                                passedEvent++;
-                                console.log(passedEvent);
+                                i++;
+                            } else {
+                                drv.eventCompleted++;
+                                clearInterval(drv.moveRoute);
                             }
                         }
-                        setTimeout(function(){
-                            resetMkPoint(7);
-                        },100)
                     });
 
-
-
-                    // console.log(drv.id)
                     var point = new BMap.Point(workers.data[i].lng, workers.data[i].lat);
-                    var marker = new BMap.Marker(point, {icon:myIcon});
-                    map.addOverlay(marker);
-                    drv.carMk = marker;
+                    drv.carMk = new BMap.Marker(point, {icon:myIcon});
+                    map.addOverlay(drv.carMk);
+
                 }
                 console.log(workers.data);
                 console.log(drivingRoutes)

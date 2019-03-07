@@ -10,29 +10,27 @@ var task = new Vue({
         type:"1",
         reward:0.5,
         taskQuery:"/schedule/taskQuery",
-        locationUpdated:"/schedule/locationUpdated"
+        locationUpdated:"/schedule/locationUpdated",
     },
 
     methods:{
 
-        updateWorkerLocations: function (drivingRoutes) {
+        updateWorkerLocations: function (drivingRoutes, map) {
             // 需要以下两个信息
             // workerId
             // lng & lat
             var drivings = [];
             for (var key of drivingRoutes) {
                 console.log(key[1])
-                console.log(key[1].lng)
 
                 var workerInfo = {
                     workerId: key[0],
                     lng: key[1].lng,
                     lat: key[1].lat,
-                    eventCompleted : key[1].passedEvent
+                    eventCompleted : key[1].eventCompleted
                 }
 
                 drivings.push(workerInfo);
-                console.log(workerInfo);
             }
 
             var task={
@@ -46,35 +44,49 @@ var task = new Vue({
                 reward:this.reward
             }
 
+            var scheduleUpdate = {
+                workerInfos:drivings,
+                task:task
+            }
+
             // 提交信息后，在后台更新所有worker 的位置信息
             axios({
                 method:'POST',
-                async : false,
                 url:this.locationUpdated,
-                data:drivings
+                data:scheduleUpdate
             }).then(function(routes) {
-                // 这里可以返回一个状态值
-                // 这里获得routes 的信息后，再调用查询，这样查询得到的位置是最新的。
-                // 提交信息后，在后台
-                // 这里会调用 arrangeTask 的函数，找到合适的worker，并且前端只更新该worker 的路径信息
+                var route = routes.data.schedule;
+                console.log(route);
+                var points = [];
+                var len = route.length;
 
-                // 提交task 的信息
-                // 返回合适的worker，然后进行操作希望读写操作快一点
-                $.ajax({
-                    url:this.taskQuery,
-                    async : false,
-                    data:JSON.stringify(task),
-                    type:'POST',
-                    dataType:"application/json;charset=utf-8",
-                    headers:{"Content-Type":"application/json;charset=UTF-8"},
-                    success:function(str){	//成功回调函数
-                        console.log("Hello world");
-                        alert(str);
-                    },
-                    error:function (err){	//失败回调函数
-                        alert(err);
-                    }
-                });
+                var start = new BMap.Point(route[0].lng, route[0].lat);
+                var end = new BMap.Point(route[len-1].lng, route[len-1].lat);
+
+
+
+                for(var i = 1; i < route.length - 1; i++){
+                    points.push(new BMap.Point(route[i].lng, route[i].lat));
+                }
+
+
+
+                var drv = drivingRoutes.get(routes.data.workerId);
+                console.log(drv.moveRoute);
+
+                clearInterval(drv.moveRoute);
+
+                drv.eventCompleted = 0;
+                console.log(drv.eventCompleted)
+                map.removeOverlay(drv.carMk)
+
+                var myIcon =new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)})
+                var point = new BMap.Point(routes.data.lng, routes.data.lat);
+                drv.carMk = new BMap.Marker(point, {icon:myIcon});
+                map.addOverlay(drv.carMk);
+                drv.search(start, end,{waypoints:points});
+
+
             });
         },
 
@@ -91,45 +103,30 @@ var task = new Vue({
                 reward:this.reward
             }
 
-            console.log(task);
-
-            $.ajax({
+            axios({
+                method:'POST',
                 url:this.taskQuery,
-                data:JSON.stringify(task),
-                type:'POST',
-                dataType:"application/json;charset=utf-8",
-                headers:{"Content-Type":"application/json;charset=UTF-8"},
-                success:function(str){	//成功回调函数
-                    console.log("Hello world");
-                    alert(str);
-                },
-                error:function (err){	//失败回调函数
-                    alert(err);
-                }
-            });
+                data:task
+            }).then(function(workerInfo){
 
-            // axios({
-            //     method:'POST',
-            //     url:this.taskQuery,
-            //     data:task
-            // }).then(function(workerInfo){
-            //
-            //     var route = workerInfo.data.schedule;
-            //     //console.log(route);
-            //     var points = [];
-            //     var len = route.length;
-            //
-            //     var start = new BMap.Point(route[0].lng, route[0].lat);
-            //     var end = new BMap.Point(route[len-1].lng, route[len-1].lat);
-            //
-            //     for(var i = 1; i < route.length - 1; i++){
-            //          points.push(new BMap.Point(route[i].lng, route[i].lat));
-            //     }
-            //
-            //     var print = drivingRoutes.get(workerInfo.data.workerId);
-            //
-            //     print.search(start, end,{waypoints:points});
-            // });
+                drv.eventCompleted = 0;
+
+                var route = workerInfo.data.schedule;
+                //console.log(route);
+                var points = [];
+                var len = route.length;
+
+                var start = new BMap.Point(route[0].lng, route[0].lat);
+                var end = new BMap.Point(route[len-1].lng, route[len-1].lat);
+
+                for(var i = 1; i < route.length - 1; i++){
+                     points.push(new BMap.Point(route[i].lng, route[i].lat));
+                }
+
+                var print = drivingRoutes.get(workerInfo.data.workerId);
+
+                print.search(start, end,{waypoints:points});
+            });
         }
     }
 });

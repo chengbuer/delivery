@@ -61,9 +61,12 @@ public class Schedule {
         this.lat = workerInfo.getLat();
         bytesToSchedule();
         int eventCompleted = workerInfo.getEventCompleted();
-        for(int i = eventCompleted; i > 1; i--){
+        for(int i = eventCompleted; i >= 1; i--){
             schedule.remove(i);
         }
+        Event start = schedule.get(0);
+        start.setLng(this.lng);
+        start.setLat(this.lat);
 
         scheduleToBytes();
     }

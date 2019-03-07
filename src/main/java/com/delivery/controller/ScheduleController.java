@@ -3,6 +3,7 @@ package com.delivery.controller;
 import com.delivery.entity.Schedule;
 import com.delivery.repository.ScheduleRepository;
 import com.delivery.service.ScheduleService;
+import com.delivery.utils.ScheduleUpdate;
 import com.delivery.utils.Task;
 import com.delivery.utils.TaskAllocation;
 import com.delivery.utils.WorkerInfo;
@@ -48,21 +49,26 @@ public class ScheduleController {
         logger.info(String.valueOf(task));
 
         Schedule bestSchedule = scheduleService.arrangeTaskToBestSchedule(task);
-        if(bestSchedule != null)
-            bestSchedule.setEvents(null);
+
 
         return bestSchedule;
     }
 
     @RequestMapping(value = "/locationUpdated", method = RequestMethod.POST)
     @ResponseBody
-    public List<Schedule> updateLocations(@RequestBody List<WorkerInfo> workersInfo){
+    public Schedule updateLocations(@RequestBody ScheduleUpdate scheduleUpdate){
         // 这里更新完之后没必要返回，直接存储，然后接着下一步就调用 安排task的函数
-        System.out.println(workersInfo);
-        scheduleService.updateSchedules(workersInfo);
-        // 位置已经能够更新了
+        List<WorkerInfo> workerInfos = scheduleUpdate.getWorkerInfos();
+        scheduleService.updateSchedules(workerInfos);
 
-        return null;
+        Task task = scheduleUpdate.getTask();
+        Schedule bestSchedule = scheduleService.arrangeTaskToBestSchedule(task);
+
+        if(bestSchedule != null)
+            bestSchedule.setEvents(null);
+
+        // 位置已经能够更新了
+        return bestSchedule;
     }
 
 

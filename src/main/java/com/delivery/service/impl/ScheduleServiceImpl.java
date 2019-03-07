@@ -77,6 +77,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<Integer> ids = new ArrayList<>();
         Map<Integer, WorkerInfo> map = new HashMap<>();
         for(WorkerInfo info : workersInfo){
+            logger.info(String.valueOf(info));
             ids.add(info.getWorkerId());
             map.put(info.getWorkerId(), info);
         }
@@ -84,12 +85,14 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<Schedule> schedules = scheduleRepository.findAllById(ids);
 
         for(Schedule schedule : schedules){
-            System.out.println("升级前 " + schedule.getLng() + " " + schedule.getLat());
+            schedule.bytesToSchedule();
+            System.out.println("升级前 " + schedule.getSchedule().size());
             Integer cur = schedule.getWorkerId();
             WorkerInfo info= map.get(cur);
 
             schedule.updateSchedule(info);
-            System.out.println("升级后" + schedule.getLng() + " " + schedule.getLat());
+
+            System.out.println("升级后" + schedule.getSchedule().size());
         }
 
         scheduleRepository.saveAll(schedules);
