@@ -131,3 +131,19 @@ var task = new Vue({
     }
 });
 
+var taskFile = new Vue({
+    el:"#upLoadFile",
+
+    data:{
+        multTaskArrange:"/schedule/tasks"
+    },
+
+    mehtods:{
+        uploadMultiTask:function(){
+            var formData = new window.FormData() // vue 中使用 window.FormData(),否则会报 'FormData isn't definded'
+            formData.append('userfile', document.querySelector('input[type=file]').files[0])
+            console.log(formData);
+        }
+    }
+});
+
