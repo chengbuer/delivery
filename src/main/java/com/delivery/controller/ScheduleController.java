@@ -11,11 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.*;
 import java.util.List;
 
 /**
@@ -49,10 +48,26 @@ public class ScheduleController {
         logger.info(String.valueOf(task));
 
         Schedule bestSchedule = scheduleService.arrangeTaskToBestSchedule(task);
-
-
         return bestSchedule;
     }
+
+    /**
+     * 文件上传具体实现方法;
+     *
+     * @param file
+     * @return
+     */
+    @RequestMapping("/upload")
+    @ResponseBody
+    public List<Schedule> updateMultiTask(@RequestParam("file") MultipartFile file) {
+        logger.info(file.getOriginalFilename());
+
+        List<Schedule> schedules = scheduleService.arrangeMultiTask(file);
+        logger.info(String.valueOf(schedules));
+
+        return schedules;
+    }
+
 
     @RequestMapping(value = "/locationUpdated", method = RequestMethod.POST)
     @ResponseBody

@@ -2,6 +2,7 @@ package com.delivery.service.impl;
 
 import com.delivery.entity.PointOfInterest;
 import com.delivery.entity.Schedule;
+import com.delivery.entity.Worker;
 import com.delivery.repository.PointOfInterestRepository;
 import com.delivery.repository.ScheduleRepository;
 import com.delivery.service.PointOfInterestService;
@@ -14,7 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 
@@ -106,5 +112,63 @@ public class ScheduleServiceImpl implements ScheduleService {
         schedule.updateSchedule(workerInfo);
         scheduleRepository.save(schedule);
         return schedule;
+    }
+
+    @Override
+    public List<Schedule> arrangeMultiTask(MultipartFile file)  {
+        List<Schedule> schedules = scheduleRepository.findAll();
+        List<PointOfInterest> pointOfInterests = pointOfInterestRepository.findAll();
+        for (Schedule schedule : schedules) {
+            schedule.bytesToSchedule();
+        }
+        try {
+            List<Task> tasks = GenerateTasks(file.getInputStream());
+
+            for(Task task : tasks){
+                TaskAllocation ta = new TaskAllocation(schedules, pointOfInterests, task);
+                ta.getBestPair();
+            }
+
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 这里要保存数据
+
+        return schedules;
+    }
+
+
+    public static List<Task> GenerateTasks(InputStream inputStream){
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        List<Task> tasks = new ArrayList<>();
+        String line = null;
+
+        try {
+            while ((line = reader.readLine()) != null) {
+                String[] task = line.split("\\s+");
+                int id = Integer.parseInt(task[0]);
+                double lng = Double.parseDouble(task[1]);
+                double lat = Double.parseDouble(task[2]);
+                double beginTime = Double.parseDouble(task[3]);
+                double endTime = Double.parseDouble(task[4]);
+                double radius = Double.parseDouble(task[5]);
+                double reward = Double.parseDouble(task[6]);
+                int type = Integer.parseInt(task[7]);
+
+                Task curTask = new Task(id, lng, lat, beginTime, endTime, radius, reward, type);
+                tasks.add(curTask);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return tasks;
     }
 }

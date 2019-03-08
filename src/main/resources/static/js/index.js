@@ -11,6 +11,7 @@ var task = new Vue({
         reward:0.5,
         taskQuery:"/schedule/taskQuery",
         locationUpdated:"/schedule/locationUpdated",
+        uploadTasks:"/schedule/upload"
     },
 
     methods:{
@@ -90,6 +91,25 @@ var task = new Vue({
             });
         },
 
+        uploadMultiTask:function(event){
+            console.log("Hello world");
+
+            let file = event.target.files[0];
+            let param = new window.FormData(); //创建form对象
+            param.append('file',file);//通过append向form对象添加数据
+            console.log(param.get('file'));
+
+            axios({
+                method:'POST',
+                url:this.uploadTasks,
+                data:param,
+                headers: { 'Content-Type': 'multipart/form-data' }
+            }).then(function(data){
+                // 把所有的schedule 画出来
+                console.log(data);
+            })
+        },
+
         arrangeTask:function(drivingRoutes){
 
             var task={
@@ -139,10 +159,14 @@ var taskFile = new Vue({
     },
 
     mehtods:{
-        uploadMultiTask:function(){
-            var formData = new window.FormData() // vue 中使用 window.FormData(),否则会报 'FormData isn't definded'
-            formData.append('userfile', document.querySelector('input[type=file]').files[0])
-            console.log(formData);
+        uploadMultiTask:function(event){
+            console.log("Hello world");
+
+            let file = event.target.files[0];
+            let param = new window.FormData(); //创建form对象
+            param.append('file',file);//通过append向form对象添加数据
+            console.log(param.get('file'));
+
         }
     }
 });
