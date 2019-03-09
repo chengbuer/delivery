@@ -64,13 +64,9 @@ var task = new Vue({
                 var start = new BMap.Point(route[0].lng, route[0].lat);
                 var end = new BMap.Point(route[len-1].lng, route[len-1].lat);
 
-
-
                 for(var i = 1; i < route.length - 1; i++){
                     points.push(new BMap.Point(route[i].lng, route[i].lat));
                 }
-
-
 
                 var drv = drivingRoutes.get(routes.data.workerId);
                 console.log(drv.moveRoute);
@@ -86,27 +82,62 @@ var task = new Vue({
                 drv.carMk = new BMap.Marker(point, {icon:myIcon});
                 map.addOverlay(drv.carMk);
                 drv.search(start, end,{waypoints:points});
-
-
             });
         },
 
-        uploadMultiTask:function(event){
+        uploadMultiTask:function(event, drivingRoutes){
             console.log("Hello world");
 
             let file = event.target.files[0];
             let param = new window.FormData(); //创建form对象
             param.append('file',file);//通过append向form对象添加数据
             console.log(param.get('file'));
+            console.log(drivingRoutes.get(1).carMk == drivingRoutes.get(2).carMk);
 
             axios({
                 method:'POST',
                 url:this.uploadTasks,
                 data:param,
                 headers: { 'Content-Type': 'multipart/form-data' }
-            }).then(function(data){
-                // 把所有的schedule 画出来
-                console.log(data);
+            }).then(function(schedules){
+                var sces = schedules.data;
+                for(var i = 0; i < sces.length; i++){
+
+                    var route = sces[i].schedule;
+                    var drNo = sces[i].workerId;
+                    console.log("当前迭代次数 " + i);
+                    console.log(route);
+
+                    if(route.length <= 1) continue;
+
+                    var points = [];
+                    var len = route.length;
+
+                    var start = new BMap.Point(route[0].lng, route[0].lat);
+                    var end = new BMap.Point(route[len-1].lng, route[len-1].lat);
+
+                    for(var j = 1; j < route.length - 1; j++){
+                        points.push(new BMap.Point(route[j].lng, route[j].lat));
+                    }
+                    var drv = drivingRoutes.get(drNo);
+
+
+                    //
+                    // clearInterval(drv.moveRoute);
+                    //
+                    // drv.eventCompleted = 0;
+                    // map.removeOverlay(drv.carMk)
+                    // console.log(sces[i]);
+                    //
+                    // var myIcon =new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)})
+                    // var point = new BMap.Point(sces[i].lng, sces[i].lat);
+                    // drv.carMk = new BMap.Marker(point, {icon:myIcon});
+                    // map.addOverlay(drv.carMk);
+                    //
+                    // console.log(drv);
+
+                    drv.search(start, end,{waypoints:points});
+                }
             })
         },
 
@@ -129,7 +160,6 @@ var task = new Vue({
                 data:task
             }).then(function(workerInfo){
 
-                drv.eventCompleted = 0;
 
                 var route = workerInfo.data.schedule;
                 //console.log(route);
