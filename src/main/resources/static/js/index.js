@@ -22,15 +22,25 @@ var task = new Vue({
             // lng & lat
             var drivings = [];
             for (var key of drivingRoutes) {
-                console.log(key[1])
+                var curLng;
+                var curLat;
+
+                if(key[1].lushu ===  undefined){
+                    curLng = key[1].lng;
+                    curLat = key[1].lat;
+                }else{
+                    curLng = key[1].lushu._marker.getPosition().lng;
+                    curLat = key[1].lushu._marker.getPosition().lat;
+                }
+
+                //console.log(key[1].lushu._marker.getCurrentPosition());
 
                 var workerInfo = {
                     workerId: key[0],
-                    lng: key[1].lng,
-                    lat: key[1].lat,
+                    lng: curLng,
+                    lat: curLat,
                     eventCompleted : key[1].eventCompleted
                 }
-
                 drivings.push(workerInfo);
             }
 
@@ -57,7 +67,6 @@ var task = new Vue({
                 data:scheduleUpdate
             }).then(function(routes) {
                 var route = routes.data.schedule;
-                console.log(route);
                 var points = [];
                 var len = route.length;
 
@@ -69,18 +78,16 @@ var task = new Vue({
                 }
 
                 var drv = drivingRoutes.get(routes.data.workerId);
-                console.log(drv.moveRoute);
-
-                clearInterval(drv.moveRoute);
+                if(drv.lushu !== undefined)
+                    map.removeOverlay(drv.lushu._marker);
 
                 drv.eventCompleted = 0;
                 console.log(drv.eventCompleted)
-                map.removeOverlay(drv.carMk)
+                map.removeOverlay(drv.carMk);
 
-                var myIcon =new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)})
-                var point = new BMap.Point(routes.data.lng, routes.data.lat);
-                drv.carMk = new BMap.Marker(point, {icon:myIcon});
-                map.addOverlay(drv.carMk);
+                // var myIcon =new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)})
+                // var point = new BMap.Point(routes.data.lng, routes.data.lat);
+                // drv.carMk = new BMap.Marker(point, {icon:myIcon});
                 drv.search(start, end,{waypoints:points});
             });
         },
@@ -92,7 +99,7 @@ var task = new Vue({
             let param = new window.FormData(); //创建form对象
             param.append('file',file);//通过append向form对象添加数据
             console.log(param.get('file'));
-            console.log(drivingRoutes.get(1).carMk == drivingRoutes.get(2).carMk);
+            console.log(drivingRoutes.get(1).carMk === drivingRoutes.get(2).carMk);
 
             axios({
                 method:'POST',

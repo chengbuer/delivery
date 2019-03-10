@@ -112,13 +112,12 @@ var bMap= new Vue({
                             pts = pts.concat(route.getPath());
                         }
 
-
                         var paths = pts.length;    //获得有几个点
 
                         var i = 0;
 
-                        lushu = new BMapLib.LuShu(map,pts,{
-                            defaultContent:"",//"从天安门到百度大厦"
+                        drv.lushu = new BMapLib.LuShu(map,pts,{
+                            defaultContent:"", //"从天安门到百度大厦"
                             autoView:false,//是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
                             icon  : new BMap.Icon('http://lbsyun.baidu.com/jsdemo/img/car.png', new BMap.Size(52,26),{anchor : new BMap.Size(27, 13)}),
                             speed: 300,
@@ -128,10 +127,10 @@ var bMap= new Vue({
                                 {lng:116.315391,lat:39.964429,html:'高速公路收费<div><img src="http://map.baidu.com/img/logo-map.gif"/></div>',pauseTime:3},
                                 {lng:116.381476,lat:39.974073,html:'肯德基早餐<div><img src="http://ishouji.baidu.com/resource/images/map/show_pic04.gif"/></div>',pauseTime:2}
                             ]});
-                        lushu.start();
+
+                        drv.lushu.start();
+                       // drv.lushu.showInfoWindow();
                     });
-
-
                 }
                 console.log(workers.data);
                 console.log(drivingRoutes)
