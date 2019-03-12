@@ -13,47 +13,53 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-2" id="task">
-            <form role="form"  class="form-horizontal">
+            <form role="form">
                 <div class="form-group">
-                    <label>id</label>
-                    <input type="text" class="form-control"  placeholder="id" style="width:180px;" v-model="id">
+                    <h2>Task information</h2>
                 </div>
-                <div class="form-group">
-                    <label>lng</label>
-                    <input type="text" class="form-control"  placeholder="经度" style="width:180px;" v-model="lng">
+                <div class="form-group form-inline">
+                    <label style="width:55px;">id :</label>
+                    <input type="text" class="form-control"  placeholder="id" style="width:170px;" v-model="id">
                 </div>
-                <div class="form-group">
-                    <label>lat</label>
-                    <input type="text" class="form-control"  placeholder="纬度" style="width:180px;" v-model="lat">
+                <div class="form-group form-inline">
+                    <label style="width:55px;">lng :</label>
+                    <input type="text" class="form-control"  placeholder="经度" style="width:170px;" v-model="lng">
                 </div>
-                <div class="form-group">
-                    <label>开始</label>
-                    <input type="text" class="form-control" placeholder="begin" style="width:180px;"
+                <div class="form-group form-inline">
+                    <label style="width:55px;">lat :</label>
+                    <input type="text" class="form-control"  placeholder="纬度" style="width:170px;" v-model="lat">
+                </div>
+                <div class="form-group form-inline">
+                    <label style="width:55px;">begin :</label>
+                    <input type="text" class="form-control" placeholder="begin" style="width:170px;"
                            v-model="beginTime">
                 </div>
-                <div class="form-group">
-                    <label>结束</label>
-                    <input type="text" class="form-control" placeholder="end" style="width:180px;" v-model="endTime">
+                <div class="form-group form-inline">
+                    <label style="width:55px;">end :</label>
+                    <input type="text" class="form-control" placeholder="end" style="width:170px;" v-model="endTime">
                 </div>
-                <div class="form-group">
-                    <label>类型</label>
-                    <input type="text" class="form-control"  placeholder="type" style="width:180px;" v-model="type">
+                <div class="form-group form-inline">
+                    <label style="width:55px;">type :</label>
+                    <input type="text" class="form-control"  placeholder="type" style="width:170px;" v-model="type">
                 </div>
-                <div class="form-group">
-                    <label>半径</label>
-                    <input type="text" class="form-control"  placeholder="radius" style="width:180px;" v-model="radius">
+                <div class="form-group form-inline">
+                    <label  style="width:55px;">radius :</label>
+                    <input type="text" class="form-control"  placeholder="radius" style="width:170px;" v-model="radius">
                 </div>
-                <div class="form-group">
-                    <label>奖励</label>
-                    <input type="text" class="form-control" placeholder="reward" style="width:180px;" v-model="reward">
+                <div class="form-group form-inline">
+                    <label style="width:55px;">reward:</label>
+                    <input type="text" class="form-control" placeholder="reward" style="width:170px;" v-model="reward">
                 </div>
                 <div class="form-group">
                     <button type="button" class="btn btn-default"
                             @click="updateWorkerLocations(drivingRoutes, map)">Submit
                     </button>
                 </div>
+                <div class="form-group">
+                    <h3>Task File</h3>
+                </div>
                 <div>
-                    <input type="file" class="btn btn-default" style="width:180px;"
+                    <input type="file" class="btn btn-default" style="width:170px;"
                            @change="uploadMultiTask($event, drivingRoutes)"/>
                 </div>
             </form>
