@@ -6,8 +6,8 @@ import com.delivery.entity.Schedule;
 import com.delivery.entity.Worker;
 import com.delivery.service.ScheduleService;
 import com.delivery.utils.Event;
+import com.delivery.utils.GreedyAssign;
 import com.delivery.utils.Task;
-import com.delivery.utils.TaskAllocation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class ScheduleServiceImplTest {
         pList.add(p);
         Task t = new Task(1, 39.35, 34.15, 0, 1000, 4, 1, 1);
 
-        TaskAllocation pair = new TaskAllocation(ss, pList, t);
+        GreedyAssign pair = new GreedyAssign(ss, pList, t);
         es = pair.getBestPair();
 
         System.out.println(es);

@@ -16,17 +16,17 @@ import java.util.List;
  * @Description: TODO
  * @date 2019/2/23 20:28
  */
-public class TaskAllocation {
+public class GreedyAssign {
         private List<Schedule> scheduleWorkers;
         private Task task;
         private List<PointOfInterest> pointInterests;
 
-        public TaskAllocation() {
+        public GreedyAssign() {
 
         }
 
         // 构造器，接收的参数 workers， task，point of interests
-        public TaskAllocation(List<Schedule> eventSchedules, List<PointOfInterest> pointInterests, Task task) {
+        public GreedyAssign(List<Schedule> eventSchedules, List<PointOfInterest> pointInterests, Task task) {
             this.scheduleWorkers = getValidWorkers(eventSchedules, task);
             System.out.println(this.scheduleWorkers);
             this.pointInterests = getValidPointInterest(pointInterests, task);

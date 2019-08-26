@@ -1,11 +1,9 @@
 package com.delivery.controller;
 
 import com.delivery.entity.Schedule;
-import com.delivery.repository.ScheduleRepository;
 import com.delivery.service.ScheduleService;
 import com.delivery.utils.ScheduleUpdate;
 import com.delivery.utils.Task;
-import com.delivery.utils.TaskAllocation;
 import com.delivery.utils.WorkerInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

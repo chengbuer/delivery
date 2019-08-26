@@ -2,21 +2,17 @@ package com.delivery.service.impl;
 
 import com.delivery.entity.PointOfInterest;
 import com.delivery.entity.Schedule;
-import com.delivery.entity.Worker;
 import com.delivery.repository.PointOfInterestRepository;
 import com.delivery.repository.ScheduleRepository;
-import com.delivery.service.PointOfInterestService;
 import com.delivery.service.ScheduleService;
-import com.delivery.utils.Event;
+import com.delivery.utils.GreedyAssign;
 import com.delivery.utils.Task;
-import com.delivery.utils.TaskAllocation;
 import com.delivery.utils.WorkerInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,7 +61,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             schedule.bytesToSchedule();
         }
 
-        TaskAllocation ta = new TaskAllocation(schedules, poIs, task);
+        GreedyAssign ta = new GreedyAssign(schedules, poIs, task);
 
         Schedule schedule = ta.getBestPair();
         logger.info(String.valueOf(schedule));
@@ -104,15 +100,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleRepository.saveAll(schedules);
     }
 
-    @Override
-    public Schedule updateSingleSchedule(WorkerInfo workerInfo) {
-
-        Optional<Schedule> k = scheduleRepository.findById(workerInfo.getWorkerId());
-        Schedule schedule = k.get();
-        schedule.updateSchedule(workerInfo);
-        scheduleRepository.save(schedule);
-        return schedule;
-    }
 
     @Override
     public List<Schedule> arrangeMultiTask(MultipartFile file)  {
@@ -125,7 +112,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             List<Task> tasks = GenerateTasks(file.getInputStream());
 
             for(Task task : tasks){
-                TaskAllocation ta = new TaskAllocation(schedules, pointOfInterests, task);
+                GreedyAssign ta = new GreedyAssign(schedules, pointOfInterests, task);
                 ta.getBestPair();
             }
 

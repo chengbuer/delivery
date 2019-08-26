@@ -21,6 +21,5 @@ public interface ScheduleService {
     void removeAllSchedule();
     Schedule arrangeTaskToBestSchedule(Task task);
     void updateSchedules(List<WorkerInfo> workersInfo);
-    Schedule updateSingleSchedule(WorkerInfo workerInfo);
     List<Schedule> arrangeMultiTask(MultipartFile file);
 }
